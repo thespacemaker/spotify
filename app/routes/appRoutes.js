@@ -15,7 +15,8 @@ module.exports = function(app) {
       .post(todoList.create_a_album);
 
   app.route('/albums/:m_id')
-    .get(todoList.list_all_albums);
+    .get(todoList.list_all_albums)
+    .put(todoList.update_album);
 
   app.route('/artists/notfound')
     .get(todoList.allNotFound)
@@ -31,3 +32,11 @@ module.exports = function(app) {
   app.route('/linkedartists')
       .get(todoList.list_all_linked_tasks);
     };
+  app.route('/linkedartists')
+      .get(todoList.list_all_linked_albums);
+    };
+  app.route('/albums/:m_id/songs')
+    .get(todoList.list_all_songs)
+
+  app.route('/songs/:m_id')
+    .put(todoList.update_song);

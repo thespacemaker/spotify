@@ -12,9 +12,30 @@ exports.list_all_tasks = function(req, res) {
     res.send(task);
   });
 };
+exports.list_all_songs = function(req, res) {
+  Task.getAllSongs(req.params, function(err, task) {
+
+    console.log('controller')
+    if (err)
+      res.send(err);
+      console.log('res', task);
+    res.send(task);
+  });
+};
 
 exports.list_all_linked_tasks = function(req, res) {
   Task.getAllLinkedTask(function(err, task) {
+
+    console.log('controller')
+    if (err)
+      res.send(err);
+      console.log('res', task);
+    res.send(task);
+  });
+};
+
+exports.list_all_linked_albums = function(req, res) {
+  Task.getAllLinkedAlbums(function(err, task) {
 
     console.log('controller')
     if (err)
@@ -108,8 +129,24 @@ exports.update_a_task = function(req, res) {
   });
 };
 
+exports.update_song = function(req, res) {
+  Task.updateSong(req.params.m_id, new Task(req.body), function(err, task) {
+    if (err)
+      res.send(err);
+    res.json(task);
+  });
+};
+
+exports.update_album = function(req, res) {
+  Task.updateByAlbum(req.params.m_id, new Task(req.body), function(err, task) {
+    if (err)
+      res.send(err);
+    res.json(task);
+  });
+};
+
 exports.not_found = function(req, res) {
-  Task.updateNotFound(req.params.m_id, new Task(req.body), function(err, task) {
+  Task.updateNotFound(req.params.notFound, req.params.m_id, new Task(req.body), function(err, task) {
     if (err)
       res.send(err);
     res.json(task);

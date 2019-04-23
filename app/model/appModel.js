@@ -36,7 +36,7 @@ Task.createAlbum = function createUser(newTask, result) {
             });
 };
 Task.getTaskById = function createUser(taskId, result) {
-        sql.query("Select task from spotify.artist where id = ? ", taskId, function (err, res) {
+        sql.query("Select task from spotify.artist where m_id = ? ", taskId, function (err, res) {
                 if(err) {
                     console.log("error: ", err);
                     result(err, null);
@@ -76,9 +76,35 @@ Task.getAllAlbum = function getAllTask(id, result) {
                 }
             });
 };
+Task.getAllSongs = function getAllTask(task, result) {
+        sql.query("Select * from spotify.songs where album_id = ? ", task.album_id, function (err, res) {
+                if(err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else{
+                    result(null, res);
+
+                }
+            });
+};
 
 Task.getAllLinkedTask = function getAllTask(result) {
         sql.query("Select * from spotify.artists WHERE uri IS NOT NULL", function (err, res) {
+
+                if(err) {
+                    console.log("error: ", err);
+                    result(null, err);
+                }
+                else{
+                  console.log('tasks : ', res);
+
+                 result(null, res);
+                }
+            });
+};
+Task.getAllLinkedAlbums = function getAllTask(result) {
+        sql.query("Select * from spotify.albums WHERE uri IS NOT NULL", function (err, res) {
 
                 if(err) {
                     console.log("error: ", err);
@@ -116,8 +142,30 @@ Task.updateById = function(id, task, result){
                 }
             });
 };
+Task.updateByAlbum = function(id, task, result){
+  sql.query("UPDATE spotify.albums SET spotify.albums.uri = ? WHERE m_id = ?", [task.uri, task.m_id], function (err, res) {
+          if(err) {
+              console.log("error: ", err);
+                result(null, err);
+             }
+           else{
+             result(null, res);
+                }
+            });
+};
+Task.updateSong = function(id, task, result){
+  sql.query("UPDATE spotify.songs SET spotify.songs.uri = ? WHERE m_id = ?", [task.uri, task.m_id], function (err, res) {
+          if(err) {
+              console.log("error: ", err);
+                result(null, err);
+             }
+           else{
+             result(null, res);
+                }
+            });
+};
 Task.updateNotFound = function(id, task, result){
-  sql.query("UPDATE spotify.artists SET spotify.artists.notFound = 1 WHERE m_id = ?", [task.m_id], function (err, res) {
+  sql.query("UPDATE spotify.artists SET spotify.artists.notFound = ? WHERE m_id = ?", [task.notFound, task.m_id], function (err, res) {
           if(err) {
               console.log("error: ", err);
                 result(null, err);
